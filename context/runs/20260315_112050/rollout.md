@@ -1,0 +1,1 @@
+ Now let me update the layout and create the shared components.

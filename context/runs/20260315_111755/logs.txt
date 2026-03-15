@@ -1,0 +1,37 @@
+2026-03-15 11:17:56  run dir /Users/navnn/Documents/AstrowareProjects/Arbos/context/runs/20260315_111755
+2026-03-15 11:17:56  prompt preview: # High level.
+
+You are Arbos, a coding agent running in a loop on a machine using `pm2`. 
+
+Your loop is fully described in `arbos.py`, this is the runtime that drives you, read it if you need implemen…
+2026-03-15 11:17:56  step 2: executing
+2026-03-15 11:17:56  step: starting (attempt=1) flags=[-p --output-format --verbose]
+2026-03-15 11:18:01  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-15 11:18:01  proxy: stream model=moonshotai/Kimi-K2.5-TEE
+2026-03-15 11:18:02  proxy: streaming [bot] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:latency
+2026-03-15 11:18:02  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-15 11:18:11  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-15 11:18:11  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-15 11:18:15  proxy: streaming [bot] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:latency
+2026-03-15 11:18:15  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-15 11:18:18  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-15 11:18:18  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-15 11:18:22  proxy: streaming [bot] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:latency
+2026-03-15 11:18:22  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-15 11:18:25  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-15 11:18:25  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-15 11:18:31  proxy: streaming [bot] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:latency
+2026-03-15 11:18:31  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-15 11:18:39  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-15 11:18:39  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-15 11:18:39  proxy: streaming [bot] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:latency
+2026-03-15 11:18:39  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-15 11:18:48  proxy: streaming [bot] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:latency
+2026-03-15 11:18:48  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-15 11:18:51  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-15 11:18:51  proxy: stream model=moonshotai/Kimi-K2.5-TEE
+2026-03-15 11:18:55  proxy: streaming [bot] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:latency
+2026-03-15 11:18:55  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-15 11:18:57  step: finished rc=0 1m 1s
+2026-03-15 11:18:57  rollout saved (146 chars)
+2026-03-15 11:18:57  step succeeded in 1m 1s

@@ -1,0 +1,1 @@
+ I'll continue building the Astroware marketing website. Let me first explore the current project state and then continue with the implementation.

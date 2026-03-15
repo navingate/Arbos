@@ -1,47 +1,41 @@
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-build/
-dist/
-wheels/
-*.egg-info/
-*.egg
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# Virtual environments
-.venv/
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
 
-# Environment & secrets
-.env
-.env.*
+# testing
+/coverage
 
-# uv
-uv.lock
+# next.js
+/.next/
+/out/
 
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
+# production
+/build
 
-# OS
+# misc
 .DS_Store
-Thumbs.db
+*.pem
 
-# Runtime / state
-.arbos-launch.sh
-.arbos.pid
-.restart
-chat_id.txt
-logs/
-history/
-scratch/
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
 
-# Context (generated run data)
-context/
+# env files (can opt-in for committing if needed)
+.env*
 
-# Codex
-.codex-pool/
-.claude/settings.local.json
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts

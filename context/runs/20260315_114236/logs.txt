@@ -1,0 +1,13 @@
+2026-03-15 11:42:36  telegram bot started
+2026-03-15 11:42:37  run dir /Users/navnn/Documents/AstrowareProjects/Arbos/context/runs/20260315_114236
+2026-03-15 11:42:37  prompt preview: # High level.
+
+You are Arbos, a coding agent running in a loop on a machine using `pm2`. 
+
+Your loop is fully described in `arbos.py`, this is the runtime that drives you, read it if you need implemen…
+2026-03-15 11:42:37  step 1: executing
+2026-03-15 11:42:37  step: starting (attempt=1) flags=[-p --output-format --verbose]
+2026-03-15 11:42:41  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-15 11:42:41  proxy: stream model=moonshotai/Kimi-K2.5-TEE
+2026-03-15 11:42:54  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-15 11:42:54  proxy: stream model=moonshotai/Kimi-K2.5-TEE

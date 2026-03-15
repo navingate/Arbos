@@ -1,0 +1,1 @@
+{"msg_id": 25, "text": "Step 1 (21.1s | 27.7k in / 216 out | 10 t/s | $0.0040)\nrunning: pm2 show arbos 2>/dev/null || echo \"pm2 process not found\""}
