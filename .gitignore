@@ -48,3 +48,4 @@ next-env.d.ts
 # Project specific
 local/
 context/
+.claude/
