@@ -50,3 +50,4 @@ local/
 context/
 .claude/
 logs/
+logs/*
