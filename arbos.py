@@ -1,5 +1,6 @@
 import base64
 import json
+import mimetypes
 import os
 import selectors
 import signal
@@ -1500,6 +1501,11 @@ def _build_operator_prompt(user_text: str) -> str:
     parts = [
         "You are the operator interface for Arbos, a coding agent running in a loop via pm2.\n"
         "The operator communicates with you through Telegram. Be concise and direct.\n"
+        "Your final answer must be short, readable, and to the point.\n"
+        "Use short paragraphs or a few flat bullets.\n"
+        "Do not narrate your plan or list every command before doing the work.\n"
+        "Do not dump internal reasoning, step-by-step intentions, or exhaustive file-by-file commentary unless asked.\n"
+        "If work is still in progress, give a brief status only.\n"
         "When the operator asks you to do something, do it by modifying the relevant files.\n"
         "When the operator asks a question, answer from the available context.\n\n"
         "## Security\n\n"
@@ -1526,6 +1532,134 @@ def _build_operator_prompt(user_text: str) -> str:
     parts.append(f"## Operator message\n{user_text}")
 
     return "\n\n".join(parts)
+
+
+def _build_operator_user_text(
+    *,
+    text: str = "",
+    caption: str = "",
+    attachment_note: str = "",
+    image_summary: str = "",
+) -> str:
+    parts: list[str] = []
+    if text.strip():
+        parts.append(text.strip())
+    if attachment_note.strip():
+        parts.append(attachment_note.strip())
+    if image_summary.strip():
+        parts.append(f"[Image summary]: {image_summary.strip()}")
+    if caption.strip():
+        parts.append(f"[Caption]: {caption.strip()}")
+    return "\n".join(parts).strip()
+
+
+def _is_image_document(message) -> bool:
+    document = getattr(message, "document", None)
+    if not document:
+        return False
+    mime_type = (getattr(document, "mime_type", "") or "").lower()
+    if mime_type.startswith("image/"):
+        return True
+    file_name = (getattr(document, "file_name", "") or "").lower()
+    guessed, _ = mimetypes.guess_type(file_name)
+    return bool(guessed and guessed.startswith("image/"))
+
+
+def _download_telegram_image(bot, message) -> tuple[bytes, str] | None:
+    file_id = None
+    mime_type = "image/jpeg"
+
+    if getattr(message, "photo", None):
+        file_id = message.photo[-1].file_id
+    elif _is_image_document(message):
+        document = message.document
+        file_id = document.file_id
+        mime_type = (getattr(document, "mime_type", "") or "").strip() or mime_type
+    else:
+        return None
+
+    file_info = bot.get_file(file_id)
+    downloaded = bot.download_file(file_info.file_path)
+
+    guessed, _ = mimetypes.guess_type(file_info.file_path)
+    if guessed:
+        mime_type = guessed
+
+    return downloaded, mime_type
+
+
+def _summarize_telegram_image(image_bytes: bytes, mime_type: str, caption: str = "") -> str:
+    if not image_bytes or PROVIDER == "gemini" or not LLM_API_KEY:
+        return ""
+
+    if PROVIDER == "openrouter":
+        url = f"{LLM_BASE_URL}/chat/completions"
+        headers = {
+            "Authorization": f"Bearer {LLM_API_KEY}",
+            "Content-Type": "application/json",
+        }
+        model = CLAUDE_MODEL
+    else:
+        url = f"{CHUTES_BASE_URL}/chat/completions"
+        headers = _chutes_headers()
+        model = CHUTES_ROUTING_BOT
+
+    prompt = (
+        "Summarize this Telegram image for a coding agent in under 120 words. "
+        "Focus on visible text, UI state, errors, and anything the operator is pointing out."
+    )
+    if caption.strip():
+        prompt += f" Operator caption: {caption.strip()}"
+
+    payload = {
+        "model": model,
+        "messages": [
+            {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": prompt},
+                    {
+                        "type": "image_url",
+                        "image_url": {
+                            "url": f"data:{mime_type};base64,{base64.b64encode(image_bytes).decode('utf-8')}"
+                        },
+                    },
+                ],
+            }
+        ],
+        "max_tokens": 180,
+        "temperature": 0,
+    }
+
+    try:
+        resp = requests.post(url, json=payload, headers=headers, timeout=45)
+        if resp.status_code != 200:
+            _log(f"image summary failed: {resp.status_code} {resp.text[:160]}")
+            return ""
+        data = resp.json()
+        content = data.get("choices", [{}])[0].get("message", {}).get("content", "")
+        if isinstance(content, list):
+            return "\n".join(
+                block.get("text", "") for block in content
+                if isinstance(block, dict) and block.get("type") == "text"
+            ).strip()
+        return str(content).strip()
+    except Exception as exc:
+        _log(f"image summary error: {str(exc)[:160]}")
+        return ""
+
+
+def _dispatch_operator_prompt(bot, chat_id: int, user_text: str):
+    log_chat("user", user_text[:1000])
+    prompt = _build_operator_prompt(user_text)
+
+    def _run():
+        response = run_agent_streaming(bot, prompt, chat_id)
+        log_chat("bot", response[:1000])
+        _process_pending_env()
+        _agent_wake.set()
+
+    threading.Thread(target=_run, daemon=True).start()
 
 
 _TOOL_LABELS = {
@@ -1598,7 +1732,6 @@ def run_agent_streaming(bot, prompt: str, chat_id: int) -> str:
     def _on_text(text: str):
         nonlocal current_text
         current_text = text
-        _edit(text)
 
     def _on_activity(status: str):
         nonlocal activity_status
@@ -1853,35 +1986,39 @@ def run_bot():
         user_text = f"[Voice note transcription]: {transcript}"
         if caption:
             user_text += f"\n[Caption]: {caption}"
+        _dispatch_operator_prompt(bot, message.chat.id, user_text)
 
-        log_chat("user", user_text[:1000])
-        prompt = _build_operator_prompt(user_text)
+    @bot.message_handler(content_types=["photo", "document"])
+    def handle_image(message):
+        uid = message.from_user.id if message.from_user else None
+        if not _is_owner(uid):
+            _reject(message)
+            return
+        if not (getattr(message, "photo", None) or _is_image_document(message)):
+            return
 
-        def _run():
-            response = run_agent_streaming(bot, prompt, message.chat.id)
-            log_chat("bot", response[:1000])
-            _process_pending_env()
-            _agent_wake.set()
+        _save_chat_id(message.chat.id)
+        caption = message.caption or ""
+        image_summary = ""
+        image_payload = _download_telegram_image(bot, message)
+        if image_payload:
+            image_bytes, mime_type = image_payload
+            image_summary = _summarize_telegram_image(image_bytes, mime_type, caption)
+        user_text = _build_operator_user_text(
+            attachment_note="[Image attached]",
+            image_summary=image_summary,
+            caption=caption,
+        )
+        _dispatch_operator_prompt(bot, message.chat.id, user_text)
 
-        threading.Thread(target=_run, daemon=True).start()
-
-    @bot.message_handler(func=lambda m: True)
+    @bot.message_handler(func=lambda m: True, content_types=["text"])
     def handle_message(message):
         uid = message.from_user.id if message.from_user else None
         if not _is_owner(uid):
             _reject(message)
             return
         _save_chat_id(message.chat.id)
-        log_chat("user", message.text)
-        prompt = _build_operator_prompt(message.text)
-
-        def _run():
-            response = run_agent_streaming(bot, prompt, message.chat.id)
-            log_chat("bot", response[:1000])
-            _process_pending_env()
-            _agent_wake.set()
-
-        threading.Thread(target=_run, daemon=True).start()
+        _dispatch_operator_prompt(bot, message.chat.id, message.text or "")
 
     _log("telegram bot started")
     while True:

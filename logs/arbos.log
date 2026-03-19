@@ -27421,3 +27421,81 @@
 2026-03-19T13:10:06:     raise ConnectionError(e, request=request)
 2026-03-19T13:10:06: requests.exceptions.ConnectionError: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8600163300:***********************************/getUpdates?offset=368959333&timeout=20 (Caused by NameResolutionError("HTTPSConnection(host='api.telegram.org', port=443): Failed to resolve 'api.telegram.org' ([Errno 8] nodename nor servname provided, or not known)"))
 2026-03-19T13:10:06: "
+2026-03-19T15:56:19: arbos starting in /Users/navnn/Documents/AstrowareProjects/Arbos (provider=gemini, model=auto)
+2026-03-19T15:56:19: gemini direct mode — no proxy needed
+2026-03-19T15:56:19: wrote .gemini/settings.json (provider=gemini, model=auto)
+2026-03-19T15:56:23: telegram message sent
+2026-03-19T15:56:23: telegram bot started
+2026-03-19T15:57:01: new goal [6da99e18a7463bce]: See the image at tg_image_1217573677.png . the logo and text is now visible as soon as we land on th
+2026-03-19T15:57:01: 
+2026-03-19T15:57:01: Step 1 (goal step 1)
+2026-03-19T15:57:01: prompt=9004 chars
+2026-03-19T15:57:02: run dir /Users/navnn/Documents/AstrowareProjects/Arbos/context/runs/20260319_155701
+2026-03-19T15:57:02: prompt preview: # High level.
+2026-03-19T15:57:02: 
+2026-03-19T15:57:02: You are Arbos, a coding agent running in a loop on a machine using `pm2`. 
+2026-03-19T15:57:02: 
+2026-03-19T15:57:02: Your loop is fully described in `arbos.py`, this is the runtime that drives you, read it if you need implemen…
+2026-03-19T15:57:02: step 1: executing
+2026-03-19T15:57:02: step: starting (attempt=1) flags=[-p --output-format --approval-mode]
+2026-03-19T15:57:02: goal set via /goal command (183 chars)
+2026-03-19T16:01:39: step: finished rc=0 4m 37s
+2026-03-19T16:01:39: rollout saved (4851 chars)
+2026-03-19T16:01:39: step succeeded in 4m 37s
+2026-03-19T16:01:40: 
+2026-03-19T16:01:40: Step 2 (goal step 2)
+2026-03-19T16:01:40: prompt=10029 chars
+2026-03-19T16:01:40: run dir /Users/navnn/Documents/AstrowareProjects/Arbos/context/runs/20260319_160140
+2026-03-19T16:01:40: prompt preview: # High level.
+2026-03-19T16:01:40: 
+2026-03-19T16:01:40: You are Arbos, a coding agent running in a loop on a machine using `pm2`. 
+2026-03-19T16:01:40: 
+2026-03-19T16:01:40: Your loop is fully described in `arbos.py`, this is the runtime that drives you, read it if you need implemen…
+2026-03-19T16:01:40: step 2: executing
+2026-03-19T16:01:40: step: starting (attempt=1) flags=[-p --output-format --approval-mode]
+2026-03-19T16:05:20: step: finished rc=0 3m 39s
+2026-03-19T16:05:20: rollout saved (2957 chars)
+2026-03-19T16:05:20: step succeeded in 3m 40s
+2026-03-19T16:05:22: 
+2026-03-19T16:05:22: Step 3 (goal step 3)
+2026-03-19T16:05:22: prompt=11054 chars
+2026-03-19T16:05:24: run dir /Users/navnn/Documents/AstrowareProjects/Arbos/context/runs/20260319_160522
+2026-03-19T16:05:24: prompt preview: # High level.
+2026-03-19T16:05:24: 
+2026-03-19T16:05:24: You are Arbos, a coding agent running in a loop on a machine using `pm2`. 
+2026-03-19T16:05:24: 
+2026-03-19T16:05:24: Your loop is fully described in `arbos.py`, this is the runtime that drives you, read it if you need implemen…
+2026-03-19T16:05:24: step 3: executing
+2026-03-19T16:05:24: step: starting (attempt=1) flags=[-p --output-format --approval-mode]
+2026-03-19T16:14:03: step: finished rc=0 8m 39s
+2026-03-19T16:14:03: rollout saved (4186 chars)
+2026-03-19T16:14:03: step succeeded in 8m 41s
+2026-03-19T16:14:05: goal cleared after 3 steps
+2026-03-19T17:45:13: Traceback (most recent call last):
+2026-03-19T17:45:13:   File "/Users/navnn/Documents/AstrowareProjects/Arbos/arbos.py", line 2067, in <module>
+2026-03-19T17:45:13:     pass
+2026-03-19T17:45:13:   File "/Users/navnn/Documents/AstrowareProjects/Arbos/arbos.py", line 2058, in main
+2026-03-19T17:45:13:     )
+2026-03-19T17:45:13:   File "/Users/navnn/miniconda3/lib/python3.10/threading.py", line 607, in wait
+2026-03-19T17:45:13:     signaled = self._cond.wait(timeout)
+2026-03-19T17:45:13:   File "/Users/navnn/miniconda3/lib/python3.10/threading.py", line 324, in wait
+2026-03-19T17:45:13:     gotit = waiter.acquire(True, timeout)
+2026-03-19T17:45:13: KeyboardInterrupt
+2026-03-19T17:45:14: arbos starting in /Users/navnn/Documents/AstrowareProjects/Arbos (provider=gemini, model=auto)
+2026-03-19T17:45:14: gemini direct mode — no proxy needed
+2026-03-19T17:45:14: wrote .gemini/settings.json (provider=gemini, model=auto)
+2026-03-19T17:45:15: telegram message sent
+2026-03-19T17:45:15: telegram bot started
+2026-03-19T17:45:58: new goal [3ab5a537d633b05a]: deploy website to cloudflare
+2026-03-19T17:45:58: 
+2026-03-19T17:45:58: Step 1 (goal step 1)
+2026-03-19T17:45:58: prompt=13217 chars
+2026-03-19T17:45:58: goal set via /goal command (28 chars)
+2026-03-19T17:45:59: run dir /Users/navnn/Documents/AstrowareProjects/Arbos/context/runs/20260319_174558
+2026-03-19T17:45:59: prompt preview: # High level.
+2026-03-19T17:45:59: 
+2026-03-19T17:45:59: You are Arbos, a coding agent running in a loop on a machine using `pm2`. 
+2026-03-19T17:45:59: 
+2026-03-19T17:45:59: Your loop is fully described in `arbos.py`, this is the runtime that drives you, read it if you need implemen…
+2026-03-19T17:45:59: step 1: executing
+2026-03-19T17:45:59: step: starting (attempt=1) flags=[-p --output-format --approval-mode]
