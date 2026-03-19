@@ -6,3 +6,4 @@ arbos.egg-info/SOURCES.txt
 arbos.egg-info/dependency_links.txt
 arbos.egg-info/requires.txt
 arbos.egg-info/top_level.txt
+tests/test_run_sh_installer.py

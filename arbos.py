@@ -231,6 +231,14 @@ if PROVIDER == "openrouter":
     COST_PER_M_OUTPUT = float(os.environ.get("COST_PER_M_OUTPUT", "25.00"))
     CHUTES_ROUTING_AGENT = CLAUDE_MODEL
     CHUTES_ROUTING_BOT = CLAUDE_MODEL
+elif PROVIDER == "gemini":
+    CLAUDE_MODEL = os.environ.get("GEMINI_MODEL", "auto")
+    LLM_API_KEY = os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY", "")
+    LLM_BASE_URL = ""
+    COST_PER_M_INPUT = 0.0
+    COST_PER_M_OUTPUT = 0.0
+    CHUTES_ROUTING_AGENT = CLAUDE_MODEL
+    CHUTES_ROUTING_BOT = CLAUDE_MODEL
 else:
     CLAUDE_MODEL = os.environ.get("CLAUDE_MODEL", "moonshotai/Kimi-K2.5-TEE")
     CHUTES_BASE_URL = os.environ.get("CHUTES_BASE_URL", "https://llm.chutes.ai/v1")
@@ -253,7 +261,7 @@ _chatlog_lock = threading.Lock()
 _pending_env_lock = threading.Lock()
 _agent_wake = threading.Event()
 _shutdown = threading.Event()
-_claude_semaphore = threading.Semaphore(MAX_CONCURRENT)
+_agent_semaphore = threading.Semaphore(MAX_CONCURRENT)
 _step_count = 0
 _goal_hash: str = ""
 _goal_step_count = 0
@@ -995,18 +1003,35 @@ def _start_proxy():
 
 # ── Agent runner ─────────────────────────────────────────────────────────────
 
-def _claude_cmd(prompt: str, extra_flags: list[str] | None = None) -> list[str]:
-    cmd = ["claude", "-p", prompt]
-    if not IS_ROOT:
-        cmd.append("--dangerously-skip-permissions")
-    cmd.extend(["--output-format", "stream-json", "--verbose"])
+# ── Agent runner ─────────────────────────────────────────────────────────────
+
+def _agent_cmd(prompt: str, extra_flags: list[str] | None = None) -> list[str]:
+    if PROVIDER == "gemini":
+        cmd = ["gemini", "-p", prompt]
+        cmd.extend(["--output-format", "stream-json", "--approval-mode", "yolo"])
+    else:
+        cmd = ["claude", "-p", prompt]
+        if not IS_ROOT:
+            cmd.append("--dangerously-skip-permissions")
+        cmd.extend(["--output-format", "stream-json", "--verbose"])
     if extra_flags:
         cmd.extend(extra_flags)
     return cmd
 
 
-def _write_claude_settings():
-    """Point Claude Code at the active provider (OpenRouter direct or Chutes proxy)."""
+def _write_agent_settings():
+    """Point Agent CLI at the active provider."""
+    if PROVIDER == "gemini":
+        settings_dir = WORKING_DIR / ".gemini"
+        settings_dir.mkdir(exist_ok=True)
+        settings = {
+            "model": {"name": CLAUDE_MODEL},
+            "tools": {"sandbox": False},
+        }
+        (settings_dir / "settings.json").write_text(json.dumps(settings, indent=2))
+        _log(f"wrote .gemini/settings.json (provider={PROVIDER}, model={CLAUDE_MODEL})")
+        return
+
     settings_dir = WORKING_DIR / ".claude"
     settings_dir.mkdir(exist_ok=True)
 
@@ -1043,9 +1068,13 @@ def _write_claude_settings():
     _log(f"wrote .claude/settings.local.json (provider={PROVIDER}, model={CLAUDE_MODEL}, target={target_label})")
 
 
-def _claude_env() -> dict[str, str]:
+def _agent_env() -> dict[str, str]:
     env = os.environ.copy()
     env.pop("TAU_BOT_TOKEN", None)
+    if PROVIDER == "gemini":
+        env["GEMINI_SANDBOX"] = "false"
+        return env
+
     if PROVIDER == "openrouter":
         env["ANTHROPIC_API_KEY"] = LLM_API_KEY
         env["ANTHROPIC_BASE_URL"] = LLM_BASE_URL
@@ -1057,8 +1086,8 @@ def _claude_env() -> dict[str, str]:
     return env
 
 
-def _run_claude_once(cmd, env, on_text=None, on_activity=None):
-    """Run a single claude subprocess, return (returncode, result_text, raw_lines, stderr).
+def _run_agent_once(cmd, env, on_text=None, on_activity=None):
+    """Run a single agent subprocess, return (returncode, result_text, raw_lines, stderr).
 
     on_text: optional callback(accumulated_text) fired as assistant text streams in.
     on_activity: optional callback(status_str) fired on tool use and other activity.
@@ -1088,7 +1117,7 @@ def _run_claude_once(cmd, env, on_text=None, on_activity=None):
             ready = sel.select(timeout=min(CLAUDE_TIMEOUT, 30))
             if not ready:
                 if time.monotonic() - last_activity > CLAUDE_TIMEOUT:
-                    _log(f"claude timeout: no output for {CLAUDE_TIMEOUT}s, killing pid={proc.pid}")
+                    _log(f"agent timeout: no output for {CLAUDE_TIMEOUT}s, killing pid={proc.pid}")
                     proc.kill()
                     timed_out = True
                     break
@@ -1105,9 +1134,17 @@ def _run_claude_once(cmd, env, on_text=None, on_activity=None):
             except json.JSONDecodeError:
                 continue
             etype = evt.get("type", "")
-            if etype == "assistant":
-                msg = evt.get("message", {})
-                for block in msg.get("content", []):
+            is_gemini_assistant_message = (
+                PROVIDER == "gemini" and etype == "message" and evt.get("role") == "assistant"
+            )
+            if etype == "assistant" or is_gemini_assistant_message:
+                if etype == "assistant":
+                    msg = evt.get("message", {})
+                    content = msg.get("content", [])
+                else: # gemini message
+                    content = [{"type": "text", "text": evt.get("content", "")}]
+
+                for block in content:
                     btype = block.get("type", "")
                     if btype == "text" and block.get("text"):
                         if evt.get("model_call_id"):
@@ -1121,12 +1158,19 @@ def _run_claude_once(cmd, env, on_text=None, on_activity=None):
                         tool_name = block.get("name", "")
                         tool_input = block.get("input", {})
                         on_activity(_format_tool_activity(tool_name, tool_input))
+
                 if PROVIDER == "openrouter":
                     u = msg.get("usage", {})
                     if u:
                         with _token_lock:
                             _token_usage["input"] += u.get("input_tokens", 0)
                             _token_usage["output"] += u.get("output_tokens", 0)
+
+            elif etype == "tool_use" and PROVIDER == "gemini" and on_activity:
+                tool_name = evt.get("tool", "")
+                tool_input = evt.get("args", {})
+                on_activity(_format_tool_activity(tool_name, tool_input))
+
             elif etype == "item.completed":
                 item = evt.get("item", {})
                 if item.get("type") == "agent_message" and item.get("text"):
@@ -1165,9 +1209,9 @@ def _run_claude_once(cmd, env, on_text=None, on_activity=None):
 
 def run_agent(cmd: list[str], phase: str, output_file: Path,
               on_text=None, on_activity=None) -> subprocess.CompletedProcess:
-    _claude_semaphore.acquire()
+    _agent_semaphore.acquire()
     try:
-        env = _claude_env()
+        env = _agent_env()
         flags = " ".join(a for a in cmd if a.startswith("-"))
 
         returncode, result_text, raw_lines, stderr_output = 1, "", [], "no attempts made"
@@ -1176,7 +1220,7 @@ def run_agent(cmd: list[str], phase: str, output_file: Path,
             _log(f"{phase}: starting (attempt={attempt}) flags=[{flags}]")
             t0 = time.monotonic()
 
-            returncode, result_text, raw_lines, stderr_output = _run_claude_once(
+            returncode, result_text, raw_lines, stderr_output = _run_agent_once(
                 cmd, env, on_text=on_text, on_activity=on_activity,
             )
             elapsed = time.monotonic() - t0
@@ -1204,7 +1248,7 @@ def run_agent(cmd: list[str], phase: str, output_file: Path,
             stdout=result_text, stderr=stderr_output,
         )
     finally:
-        _claude_semaphore.release()
+        _agent_semaphore.release()
 
 
 def extract_text(result: subprocess.CompletedProcess) -> str:
@@ -1284,7 +1328,7 @@ def run_step(prompt: str, step_number: int, goal_step: int = 0) -> bool:
         threading.Thread(target=_heartbeat, daemon=True).start()
 
         result = run_agent(
-            _claude_cmd(prompt),
+            _agent_cmd(prompt),
             phase="step",
             output_file=run_dir / "output.txt",
             on_activity=_on_activity,
@@ -1524,10 +1568,12 @@ def _format_tool_activity(tool_name: str, tool_input: dict) -> str:
 
 def run_agent_streaming(bot, prompt: str, chat_id: int) -> str:
     """Run Claude Code CLI and stream output into a Telegram message."""
-    if PROVIDER == "openrouter":
-        cmd = _claude_cmd(prompt)
+    if PROVIDER == "gemini":
+        cmd = _agent_cmd(prompt)
+    elif PROVIDER == "openrouter":
+        cmd = _agent_cmd(prompt)
     else:
-        cmd = _claude_cmd(prompt, extra_flags=["--model", "bot"])
+        cmd = _agent_cmd(prompt, extra_flags=["--model", "bot"])
 
     msg = bot.send_message(chat_id, "thinking...")
     current_text = ""
@@ -1560,16 +1606,16 @@ def run_agent_streaming(bot, prompt: str, chat_id: int) -> str:
         if not current_text:
             _edit(status)
 
-    _claude_semaphore.acquire()
+    _agent_semaphore.acquire()
     try:
-        env = _claude_env()
+        env = _agent_env()
 
         for attempt in range(1, MAX_RETRIES + 1):
             current_text = ""
             activity_status = ""
             last_edit = 0.0
 
-            returncode, result_text, raw_lines, stderr_output = _run_claude_once(
+            returncode, result_text, raw_lines, stderr_output = _run_agent_once(
                 cmd, env, on_text=_on_text, on_activity=_on_activity,
             )
 
@@ -1598,7 +1644,7 @@ def run_agent_streaming(bot, prompt: str, chat_id: int) -> str:
         except Exception:
             pass
     finally:
-        _claude_semaphore.release()
+        _agent_semaphore.release()
 
     return current_text
 
@@ -1864,24 +1910,26 @@ def _kill_child_procs():
         _child_procs.clear()
 
 
-def _kill_stale_claude_procs():
-    """Kill any leftover claude processes from a previous arbos instance."""
+def _kill_stale_agent_procs():
+    """Kill any leftover agent processes from a previous arbos instance."""
     my_pid = os.getpid()
     try:
-        result = subprocess.run(
-            ["pgrep", "-x", "claude"], capture_output=True, text=True, timeout=5,
-        )
-        for line in result.stdout.strip().splitlines():
-            pid = int(line.strip())
-            if pid == my_pid:
-                continue
-            try:
-                os.kill(pid, signal.SIGKILL)
-                _log(f"killed stale claude orphan pid={pid}")
-            except ProcessLookupError:
-                pass
-            except PermissionError:
-                pass
+        # Kill both claude and gemini
+        for proc_name in ("claude", "gemini"):
+            result = subprocess.run(
+                ["pgrep", "-x", proc_name], capture_output=True, text=True, timeout=5,
+            )
+            for line in result.stdout.strip().splitlines():
+                pid = int(line.strip())
+                if pid == my_pid:
+                    continue
+                try:
+                    os.kill(pid, signal.SIGKILL)
+                    _log(f"killed stale {proc_name} orphan pid={pid}")
+                except ProcessLookupError:
+                    pass
+                except PermissionError:
+                    pass
     except Exception:
         pass
 
@@ -1970,11 +2018,11 @@ def main() -> None:
         return
 
     _log(f"arbos starting in {WORKING_DIR} (provider={PROVIDER}, model={CLAUDE_MODEL})")
-    _kill_stale_claude_procs()
+    _kill_stale_agent_procs()
     _reload_env_secrets()
     CONTEXT_DIR.mkdir(parents=True, exist_ok=True)
 
-    if not LLM_API_KEY:
+    if not LLM_API_KEY and PROVIDER != "gemini":
         key_name = "OPENROUTER_API_KEY" if PROVIDER == "openrouter" else "CHUTES_API_KEY"
         _log(f"WARNING: {key_name} not set — LLM calls will fail")
 
@@ -1984,14 +2032,16 @@ def main() -> None:
 
     signal.signal(signal.SIGTERM, _handle_sigterm)
 
-    if PROVIDER != "openrouter":
+    if PROVIDER == "gemini":
+        _log(f"gemini direct mode — no proxy needed")
+    elif PROVIDER != "openrouter":
         _log(f"starting chutes proxy thread (port={PROXY_PORT}, agent={CHUTES_ROUTING_AGENT}, bot={CHUTES_ROUTING_BOT})")
         threading.Thread(target=_start_proxy, daemon=True).start()
         time.sleep(1)
     else:
         _log(f"openrouter direct mode — no proxy needed (target={LLM_BASE_URL})")
 
-    _write_claude_settings()
+    _write_agent_settings()
 
     _send_telegram_text("Restarted.")
 

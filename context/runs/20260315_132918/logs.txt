@@ -1,0 +1,72 @@
+2026-03-15 13:29:18  run dir /Users/navnn/Documents/AstrowareProjects/Arbos/context/runs/20260315_132918
+2026-03-15 13:29:18  prompt preview: # High level.
+
+You are Arbos, a coding agent running in a loop on a machine using `pm2`. 
+
+Your loop is fully described in `arbos.py`, this is the runtime that drives you, read it if you need implemen…
+2026-03-15 13:29:18  step 16: executing
+2026-03-15 13:29:18  step: starting (attempt=1) flags=[-p --output-format --verbose]
+2026-03-15 13:29:21  proxy: chutes returned 402 (attempt 1/3): {"detail":"Subscription usage cap exceeded. Please add balance to continue."}
+2026-03-15 13:29:22  proxy: chutes returned 402 (attempt 2/3): {"detail":"Subscription usage cap exceeded. Please add balance to continue."}
+2026-03-15 13:29:24  proxy: chutes returned 402 (attempt 3/3): {"detail":"Subscription usage cap exceeded. Please add balance to continue."}
+2026-03-15 13:29:27  proxy: chutes returned 402 (attempt 1/3): {"detail":"Subscription usage cap exceeded. Please add balance to continue."}
+2026-03-15 13:29:28  proxy: chutes returned 402 (attempt 2/3): {"detail":"Subscription usage cap exceeded. Please add balance to continue."}
+2026-03-15 13:29:30  proxy: chutes returned 402 (attempt 3/3): {"detail":"Subscription usage cap exceeded. Please add balance to continue."}
+2026-03-15 13:29:33  proxy: chutes returned 402 (attempt 1/3): {"detail":"Subscription usage cap exceeded. Please add balance to continue."}
+2026-03-15 13:29:35  proxy: chutes returned 402 (attempt 2/3): {"detail":"Subscription usage cap exceeded. Please add balance to continue."}
+2026-03-15 13:29:36  proxy: chutes returned 402 (attempt 3/3): {"detail":"Subscription usage cap exceeded. Please add balance to continue."}
+2026-03-15 13:29:40  proxy: chutes returned 402 (attempt 1/3): {"detail":"Subscription usage cap exceeded. Please add balance to continue."}
+2026-03-15 13:29:42  proxy: chutes returned 402 (attempt 2/3): {"detail":"Subscription usage cap exceeded. Please add balance to continue."}
+2026-03-15 13:29:44  proxy: chutes returned 402 (attempt 3/3): {"detail":"Subscription usage cap exceeded. Please add balance to continue."}
+2026-03-15 13:29:50  proxy: chutes returned 402 (attempt 1/3): {"detail":"Subscription usage cap exceeded. Please add balance to continue."}
+2026-03-15 13:29:51  proxy: chutes returned 402 (attempt 2/3): {"detail":"Subscription usage cap exceeded. Please add balance to continue."}
+2026-03-15 13:29:52  proxy: chutes returned 402 (attempt 3/3): {"detail":"Subscription usage cap exceeded. Please add balance to continue."}
+2026-03-15 13:30:07  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-15 13:30:07  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-15 13:30:20  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-15 13:30:20  proxy: stream model=moonshotai/Kimi-K2.5-TEE
+2026-03-15 13:30:33  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-15 13:30:33  proxy: stream model=moonshotai/Kimi-K2.5-TEE
+2026-03-15 13:30:53  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-15 13:30:53  proxy: stream model=moonshotai/Kimi-K2.5-TEE
+2026-03-15 13:33:35  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-15 13:33:35  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-15 13:33:40  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-15 13:33:40  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-15 13:34:11  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-15 13:34:11  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-15 13:34:16  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-15 13:34:16  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-15 13:34:46  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-15 13:34:46  proxy: stream model=moonshotai/Kimi-K2.5-TEE
+2026-03-15 13:34:55  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-15 13:34:55  proxy: stream model=moonshotai/Kimi-K2.5-TEE
+2026-03-15 13:35:00  proxy: streaming [bot] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:latency
+2026-03-15 13:35:00  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-15 13:35:05  proxy: streaming [bot] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:latency
+2026-03-15 13:35:05  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-15 13:35:09  proxy: streaming [bot] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:latency
+2026-03-15 13:35:09  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-15 13:35:14  proxy: streaming [bot] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:latency
+2026-03-15 13:35:14  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-15 13:35:34  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-15 13:35:34  proxy: stream model=moonshotai/Kimi-K2.5-TEE
+2026-03-15 13:35:46  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-15 13:35:46  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-15 13:35:56  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-15 13:35:56  proxy: stream model=moonshotai/Kimi-K2.5-TEE
+2026-03-15 13:36:06  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-15 13:36:06  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-15 13:36:20  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-15 13:36:20  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-15 13:36:30  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-15 13:36:30  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-15 13:36:37  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-15 13:36:37  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-15 13:36:51  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-15 13:36:51  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-15 13:37:05  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-15 13:37:05  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-15 13:37:07  step: finished rc=0 7m 48s
+2026-03-15 13:37:07  rollout saved (242 chars)
+2026-03-15 13:37:07  step succeeded in 7m 49s

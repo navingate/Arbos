@@ -1,0 +1,25 @@
+2026-03-18 06:31:18  run dir /Users/navnn/Documents/AstrowareProjects/Arbos/context/runs/20260318_063117
+2026-03-18 06:31:18  prompt preview: # High level.
+
+You are Arbos, a coding agent running in a loop on a machine using `pm2`. 
+
+Your loop is fully described in `arbos.py`, this is the runtime that drives you, read it if you need implemen…
+2026-03-18 06:31:18  step 3: executing
+2026-03-18 06:31:18  step: starting (attempt=1) flags=[-p --dangerously-skip-permissions --output-format --verbose]
+2026-03-18 06:31:24  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-18 06:31:24  proxy: stream model=moonshotai/Kimi-K2.5-TEE
+2026-03-18 06:31:31  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-18 06:31:31  proxy: stream model=moonshotai/Kimi-K2.5-TEE
+2026-03-18 06:31:46  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-18 06:31:46  proxy: stream model=moonshotai/Kimi-K2.5-TEE
+2026-03-18 06:32:26  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-18 06:32:26  proxy: stream model=moonshotai/Kimi-K2.5-TEE
+2026-03-18 06:33:02  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-18 06:33:02  proxy: stream model=moonshotai/Kimi-K2.5-TEE
+2026-03-18 06:33:09  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-18 06:33:09  proxy: stream model=moonshotai/Kimi-K2.5-TEE
+2026-03-18 06:33:20  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-18 06:33:20  proxy: stream model=moonshotai/Kimi-K2.5-TEE
+2026-03-18 06:33:28  step: finished rc=0 2m 10s
+2026-03-18 06:33:28  rollout saved (321 chars)
+2026-03-18 06:33:28  step succeeded in 2m 10s

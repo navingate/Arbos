@@ -11,3 +11,12 @@ Your loop is fully described in `arbos.py`, this is the runtime that drives you,
 2026-03-15 11:42:41  proxy: stream model=moonshotai/Kimi-K2.5-TEE
 2026-03-15 11:42:54  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
 2026-03-15 11:42:54  proxy: stream model=moonshotai/Kimi-K2.5-TEE
+2026-03-15 11:43:03  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-15 11:43:03  proxy: stream model=moonshotai/Kimi-K2.5-TEE
+2026-03-15 11:43:15  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-15 11:43:15  proxy: stream model=moonshotai/Kimi-K2.5-TEE
+2026-03-15 11:43:21  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-15 11:43:21  proxy: stream model=moonshotai/Kimi-K2.5-TEE
+2026-03-15 11:43:29  step: finished rc=0 51.5s
+2026-03-15 11:43:29  rollout saved (908 chars)
+2026-03-15 11:43:29  step succeeded in 52.1s

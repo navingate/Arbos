@@ -1,0 +1,3 @@
+ I need to switch the website from dark theme to light theme like Goodfire, and add more animations and images. Let me start by examining the current structure and styles. Let me check the Navigation and Footer components which likely have dark theme styling.  Let me check the other pages to see if there are any dark theme remnants.  I can see the website already has a light theme but there's still some dark-themed remnants. Let me update it to more closely match Goodfire.ai's clean, minimal aesthetic with better animations and visuals.
+
+Now let me revamp the Home page with more captivating animations and visuals.

@@ -25,6 +25,23 @@ die() { err "$1"; exit 1; }
 
 command_exists() { command -v "$1" >/dev/null 2>&1; }
 
+env_value() {
+    local key="$1"
+    if [ -f "$INSTALL_DIR/.env" ]; then
+        grep "^${key}=" "$INSTALL_DIR/.env" | head -1 | cut -d= -f2- | tr -d "' \""
+    fi
+}
+
+set_env_value() {
+    local key="$1" value="$2"
+    if grep -q "^${key}=" "$INSTALL_DIR/.env" 2>/dev/null; then
+        sed -i.bak "s|^${key}=.*|${key}=${value}|" "$INSTALL_DIR/.env"
+        rm -f "$INSTALL_DIR/.env.bak"
+    else
+        echo "${key}=${value}" >> "$INSTALL_DIR/.env"
+    fi
+}
+
 # ── Spinner ──────────────────────────────────────────────────────────────────
 
 spin() {
@@ -111,6 +128,22 @@ pkg_install() {
     fi
 }
 
+install_nodejs() {
+    if command_exists npm; then
+        return 0
+    fi
+
+    if command_exists brew; then
+        run "Installing Node.js" brew install node
+    elif command_exists apt-get; then
+        run "Installing Node.js" bash -c "sudo apt-get update -qq && sudo apt-get install -y -qq nodejs npm"
+    else
+        die "npm/node required — install Node.js first"
+    fi
+
+    command_exists npm || die "npm install failed"
+}
+
 # ── 2. Install prerequisites ────────────────────────────────────────────────
 
 printf "  ${BOLD}Installing prerequisites${NC}\n\n"
@@ -142,7 +175,42 @@ fi
 
 printf "\n"
 
-# ── 4. Install tooling ──────────────────────────────────────────────────────
+# ── 4. Choose agent runtime ─────────────────────────────────────────────────
+
+touch "$INSTALL_DIR/.env"
+
+AGENT_RUNTIME=""
+PROVIDER="$(env_value PROVIDER)"
+
+printf "  ${BOLD}Agent Runtime${NC}\n\n"
+
+if [ -n "$PROVIDER" ]; then
+    if [ "$PROVIDER" = "gemini" ]; then
+        AGENT_RUNTIME="gemini"
+        ok "Agent runtime already set: Gemini CLI"
+    else
+        AGENT_RUNTIME="claude"
+        ok "Agent runtime already set: Claude Code"
+    fi
+elif [ "$HAS_TTY" = true ]; then
+    printf "  ${DIM}Pick your agent runtime:${NC}\n\n"
+    printf "    ${BOLD}1)${NC} Claude Code  ${DIM}— use Claude Code with Chutes or OpenRouter${NC}\n"
+    printf "    ${BOLD}2)${NC} Gemini CLI   ${DIM}— use native Gemini models with Gemini CLI auth${NC}\n\n"
+    printf "  ${CYAN}Choice [1]:${NC} "
+    read -r _choice </dev/tty 2>/dev/null || _choice=""
+    case "$_choice" in
+        2) AGENT_RUNTIME="gemini" ;;
+        *) AGENT_RUNTIME="claude" ;;
+    esac
+    ok "Agent runtime set to $( [ "$AGENT_RUNTIME" = "gemini" ] && printf "Gemini CLI" || printf "Claude Code" )"
+else
+    AGENT_RUNTIME="claude"
+    ok "Agent runtime defaulted to Claude Code (no TTY)"
+fi
+
+printf "\n"
+
+# ── 5. Install tooling ──────────────────────────────────────────────────────
 
 printf "  ${BOLD}Installing tooling${NC}\n\n"
 
@@ -157,16 +225,26 @@ else
     command_exists uv || die "uv install failed"
 fi
 
-# Claude Code CLI
-if command_exists claude; then
-    ok "Claude Code already installed"
-else
-    if command_exists npm; then
-        run "Installing Claude Code" npm install -g @anthropic-ai/claude-code
+install_nodejs
+
+if [ "$AGENT_RUNTIME" = "gemini" ]; then
+    if command_exists gemini; then
+        ok "Gemini CLI already installed"
     else
-        die "npm required to install Claude Code CLI"
+        if command_exists brew; then
+            run "Installing Gemini CLI" brew install gemini-cli
+        else
+            run "Installing Gemini CLI" npm install -g @google/gemini-cli@latest
+        fi
+        command_exists gemini || die "'gemini' command not found — install via: npm i -g @google/gemini-cli"
     fi
-    command_exists claude || die "'claude' command not found — install via: npm i -g @anthropic-ai/claude-code"
+else
+    if command_exists claude; then
+        ok "Claude Code already installed"
+    else
+        run "Installing Claude Code" npm install -g @anthropic-ai/claude-code
+        command_exists claude || die "'claude' command not found — install via: npm i -g @anthropic-ai/claude-code"
+    fi
 fi
 
 # PATH persistence
@@ -181,7 +259,7 @@ fi
 
 printf "\n"
 
-# ── 5. Python environment ───────────────────────────────────────────────────
+# ── 6. Python environment ───────────────────────────────────────────────────
 
 printf "  ${BOLD}Setting up project${NC}\n\n"
 
@@ -200,15 +278,16 @@ mkdir -p context/runs context/chat
 
 printf "\n"
 
-# ── 6. Choose provider ───────────────────────────────────────────────────────
+# ── 7. Choose provider ───────────────────────────────────────────────────────
 
 printf "  ${BOLD}LLM Provider${NC}\n\n"
 
-touch "$INSTALL_DIR/.env"
-
-PROVIDER=""
-if grep -q "^PROVIDER=" "$INSTALL_DIR/.env" 2>/dev/null; then
-    PROVIDER=$(grep "^PROVIDER=" "$INSTALL_DIR/.env" | head -1 | cut -d= -f2 | tr -d "' \"")
+PROVIDER="$(env_value PROVIDER)"
+if [ "$AGENT_RUNTIME" = "gemini" ]; then
+    PROVIDER="gemini"
+    set_env_value "PROVIDER" "$PROVIDER"
+    ok "Provider set to gemini (native Gemini CLI runtime)"
+elif [ -n "$PROVIDER" ]; then
     ok "Provider already set: $PROVIDER"
 elif [ "$HAS_TTY" = true ]; then
     printf "  ${DIM}Pick your inference backend:${NC}\n\n"
@@ -220,17 +299,56 @@ elif [ "$HAS_TTY" = true ]; then
         2) PROVIDER="openrouter" ;;
         *) PROVIDER="chutes" ;;
     esac
-    echo "PROVIDER=$PROVIDER" >> "$INSTALL_DIR/.env"
+    set_env_value "PROVIDER" "$PROVIDER"
     ok "Provider set to $PROVIDER"
 else
     PROVIDER="chutes"
-    echo "PROVIDER=$PROVIDER" >> "$INSTALL_DIR/.env"
+    set_env_value "PROVIDER" "$PROVIDER"
     ok "Provider defaulted to chutes (no TTY)"
 fi
 
 printf "\n"
 
-# ── 7. API keys ──────────────────────────────────────────────────────────────
+# ── 8. Gemini model ──────────────────────────────────────────────────────────
+
+if [ "$PROVIDER" = "gemini" ]; then
+    printf "  ${BOLD}Gemini Model${NC}\n\n"
+
+    GEMINI_MODEL="$(env_value GEMINI_MODEL)"
+    if [ -n "$GEMINI_MODEL" ]; then
+        ok "Gemini model already set: $GEMINI_MODEL"
+    elif [ "$HAS_TTY" = true ]; then
+        printf "  ${DIM}Pick your Gemini model:${NC}\n\n"
+        printf "    ${BOLD}1)${NC} auto        ${DIM}— recommended automatic model selection${NC}\n"
+        printf "    ${BOLD}2)${NC} pro         ${DIM}— best for deep reasoning${NC}\n"
+        printf "    ${BOLD}3)${NC} flash       ${DIM}— balanced speed and quality${NC}\n"
+        printf "    ${BOLD}4)${NC} flash-lite  ${DIM}— fastest for lighter tasks${NC}\n"
+        printf "    ${BOLD}5)${NC} Custom      ${DIM}— enter an exact Gemini model name${NC}\n\n"
+        printf "  ${CYAN}Choice [1]:${NC} "
+        read -r _choice </dev/tty 2>/dev/null || _choice=""
+        case "$_choice" in
+            2) GEMINI_MODEL="pro" ;;
+            3) GEMINI_MODEL="flash" ;;
+            4) GEMINI_MODEL="flash-lite" ;;
+            5)
+                printf "  ${CYAN}Custom Gemini model:${NC} "
+                read -r GEMINI_MODEL </dev/tty 2>/dev/null || GEMINI_MODEL=""
+                [ -n "$GEMINI_MODEL" ] || die "Gemini model is required"
+                ;;
+            *) GEMINI_MODEL="auto" ;;
+        esac
+        set_env_value "GEMINI_MODEL" "$GEMINI_MODEL"
+        ok "Gemini model set to $GEMINI_MODEL"
+    else
+        GEMINI_MODEL="auto"
+        set_env_value "GEMINI_MODEL" "$GEMINI_MODEL"
+        ok "Gemini model defaulted to auto (no TTY)"
+    fi
+
+    printf "\n"
+fi
+
+# ── 9. API keys ──────────────────────────────────────────────────────────────
 
 printf "  ${BOLD}API Keys${NC}\n\n"
 
@@ -273,7 +391,9 @@ ask_key() {
     ok "$key_name saved"
 }
 
-if [ "$PROVIDER" = "openrouter" ]; then
+if [ "$PROVIDER" = "gemini" ]; then
+    ok "Gemini CLI uses native authentication — no API key prompt needed"
+elif [ "$PROVIDER" = "openrouter" ]; then
     ask_key "OPENROUTER_API_KEY" \
         "OpenRouter API key" \
         "Get yours at: https://openrouter.ai/keys" \
@@ -294,14 +414,21 @@ ask_key "TAU_BOT_TOKEN" \
 
 printf "\n"
 
-# ── 8. Start Arbos ───────────────────────────────────────────────────────────
+# ── 10. Start Arbos ──────────────────────────────────────────────────────────
 
 printf "  ${BOLD}Starting Arbos${NC}\n\n"
 
-if ! command_exists claude; then
-    die "'claude' command not found in PATH — install via: npm i -g @anthropic-ai/claude-code"
+if [ "$AGENT_RUNTIME" = "gemini" ]; then
+    if ! command_exists gemini; then
+        die "'gemini' command not found in PATH — install via: npm i -g @google/gemini-cli"
+    fi
+    ok "Gemini CLI found at $(which gemini)"
+else
+    if ! command_exists claude; then
+        die "'claude' command not found in PATH — install via: npm i -g @anthropic-ai/claude-code"
+    fi
+    ok "Claude Code found at $(which claude)"
 fi
-ok "Claude Code found at $(which claude)"
 
 LAUNCH_SCRIPT="$INSTALL_DIR/.arbos-launch.sh"
 cat > "$LAUNCH_SCRIPT" <<LAUNCH
@@ -318,15 +445,7 @@ PM2_NAME="arbos"
 
 # Install pm2 if needed
 if ! command_exists pm2; then
-    if ! command_exists npm && ! command_exists npx; then
-        if command_exists brew; then
-            run "Installing Node.js" brew install node
-        elif command_exists apt-get; then
-            run "Installing Node.js" bash -c "sudo apt-get update -qq && sudo apt-get install -y -qq nodejs npm"
-        else
-            die "npm/node required for pm2 — install Node.js first"
-        fi
-    fi
+    install_nodejs
     run "Installing pm2" npm install -g pm2
     command_exists pm2 || die "pm2 install failed"
 fi

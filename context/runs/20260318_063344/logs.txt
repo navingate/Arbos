@@ -1,0 +1,23 @@
+2026-03-18 06:33:44  run dir /Users/navnn/Documents/AstrowareProjects/Arbos/context/runs/20260318_063344
+2026-03-18 06:33:44  prompt preview: # High level.
+
+You are Arbos, a coding agent running in a loop on a machine using `pm2`. 
+
+Your loop is fully described in `arbos.py`, this is the runtime that drives you, read it if you need implemen…
+2026-03-18 06:33:44  step 5: executing
+2026-03-18 06:33:44  step: starting (attempt=1) flags=[-p --dangerously-skip-permissions --output-format --verbose]
+2026-03-18 06:33:49  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-18 06:33:49  proxy: stream model=moonshotai/Kimi-K2.5-TEE
+2026-03-18 06:34:04  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-18 06:34:04  proxy: stream model=moonshotai/Kimi-K2.5-TEE
+2026-03-18 06:34:17  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-18 06:34:17  proxy: stream model=moonshotai/Kimi-K2.5-TEE
+2026-03-18 06:35:06  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-18 06:35:06  proxy: stream model=moonshotai/Kimi-K2.5-TEE
+2026-03-18 06:35:38  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-18 06:35:38  proxy: stream model=moonshotai/Kimi-K2.5-TEE
+2026-03-18 06:35:50  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-18 06:35:50  proxy: stream model=moonshotai/Kimi-K2.5-TEE
+2026-03-18 06:35:53  step: finished rc=0 2m 8s
+2026-03-18 06:35:53  rollout saved (215 chars)
+2026-03-18 06:35:53  step succeeded in 2m 8s

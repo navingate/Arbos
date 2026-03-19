@@ -1,0 +1,43 @@
+2026-03-18 06:46:24  goal set via /goal command (133 chars)
+2026-03-18 06:46:24  run dir /Users/navnn/Documents/AstrowareProjects/Arbos/context/runs/20260318_064623
+2026-03-18 06:46:24  prompt preview: # High level.
+
+You are Arbos, a coding agent running in a loop on a machine using `pm2`. 
+
+Your loop is fully described in `arbos.py`, this is the runtime that drives you, read it if you need implemen…
+2026-03-18 06:46:24  step 9: executing
+2026-03-18 06:46:24  step: starting (attempt=1) flags=[-p --dangerously-skip-permissions --output-format --verbose]
+2026-03-18 06:46:29  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-18 06:46:29  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-18 06:46:35  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-18 06:46:35  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-18 06:46:42  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-18 06:46:42  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-18 06:46:50  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-18 06:46:50  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-18 06:46:56  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-18 06:46:56  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-18 06:47:00  goal set via /goal command (83 chars)
+2026-03-18 06:47:13  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-18 06:47:13  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-18 06:47:23  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-18 06:47:23  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-18 06:47:30  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-18 06:47:30  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-18 06:48:12  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-18 06:48:12  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-18 06:48:47  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-18 06:48:47  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-18 06:48:53  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-18 06:48:53  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-18 06:49:01  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-18 06:49:01  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-18 06:49:08  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-18 06:49:08  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-18 06:49:17  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-18 06:49:17  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-18 06:49:26  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-18 06:49:26  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-18 06:49:31  step: finished rc=0 3m 7s
+2026-03-18 06:49:31  rollout saved (334 chars)
+2026-03-18 06:49:31  step succeeded in 3m 8s

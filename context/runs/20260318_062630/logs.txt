@@ -1,0 +1,15 @@
+2026-03-18 06:26:30  run dir /Users/navnn/Documents/AstrowareProjects/Arbos/context/runs/20260318_062630
+2026-03-18 06:26:30  prompt preview: # High level.
+
+You are Arbos, a coding agent running in a loop on a machine using `pm2`. 
+
+Your loop is fully described in `arbos.py`, this is the runtime that drives you, read it if you need implemen…
+2026-03-18 06:26:30  step 1: executing
+2026-03-18 06:26:30  step: starting (attempt=1) flags=[-p --dangerously-skip-permissions --output-format --verbose]
+2026-03-18 06:26:34  proxy: streaming [bot] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:latency
+2026-03-18 06:26:34  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-18 06:26:41  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-18 06:26:41  proxy: stream model=moonshotai/Kimi-K2.5-TEE
+2026-03-18 06:26:45  restart requested; killing children and exiting for pm2
+2026-03-18 06:26:45  killing child claude pid=24878
+2026-03-18 06:26:45  killing child claude pid=28304

@@ -1,0 +1,25 @@
+2026-03-15 11:56:42  run dir /Users/navnn/Documents/AstrowareProjects/Arbos/context/runs/20260315_115642
+2026-03-15 11:56:42  prompt preview: # High level.
+
+You are Arbos, a coding agent running in a loop on a machine using `pm2`. 
+
+Your loop is fully described in `arbos.py`, this is the runtime that drives you, read it if you need implemen…
+2026-03-15 11:56:42  step 2: executing
+2026-03-15 11:56:42  step: starting (attempt=1) flags=[-p --output-format --verbose]
+2026-03-15 11:56:47  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-15 11:56:47  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-15 11:56:52  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-15 11:56:52  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-15 11:56:56  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-15 11:56:56  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-15 11:57:02  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-15 11:57:02  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-15 11:57:10  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-15 11:57:10  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-15 11:57:18  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-15 11:57:18  proxy: stream model=MiniMaxAI/MiniMax-M2.5-TEE
+2026-03-15 11:57:32  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-15 11:57:32  proxy: stream model=moonshotai/Kimi-K2.5-TEE
+2026-03-15 11:57:39  step: finished rc=0 57.2s
+2026-03-15 11:57:39  rollout saved (234 chars)
+2026-03-15 11:57:39  step succeeded in 57.9s

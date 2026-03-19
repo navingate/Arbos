@@ -1,0 +1,13 @@
+2026-03-15 11:46:54  run dir /Users/navnn/Documents/AstrowareProjects/Arbos/context/runs/20260315_114654
+2026-03-15 11:46:54  prompt preview: # High level.
+
+You are Arbos, a coding agent running in a loop on a machine using `pm2`. 
+
+Your loop is fully described in `arbos.py`, this is the runtime that drives you, read it if you need implemen…
+2026-03-15 11:46:54  step 5: executing
+2026-03-15 11:46:54  step: starting (attempt=1) flags=[-p --output-format --verbose]
+2026-03-15 11:46:58  proxy: streaming [agent] via moonshotai/Kimi-K2.5-TEE,zai-org/GLM-5-TEE,MiniMaxAI/MiniMax-M2.5-TEE,zai-org/GLM-4.7-TEE:throughput
+2026-03-15 11:46:58  proxy: stream model=moonshotai/Kimi-K2.5-TEE
+2026-03-15 11:47:13  step: finished rc=0 19.1s
+2026-03-15 11:47:13  rollout saved (1234 chars)
+2026-03-15 11:47:13  step succeeded in 19.6s
