@@ -1,8 +1,0 @@
-2026-03-17 19:25:18  telegram send failed: HTTPSConnectionPool(host='api.telegram.org', port=443): Max retries exceeded with url: /bot8600163300:AAGAri1SZr_Q20Rc6g
-2026-03-17 19:25:18  run dir /Users/navnn/Documents/AstrowareProjects/Arbos/context/runs/20260317_192518
-2026-03-17 19:25:18  prompt preview: # High level.
-
-You are Arbos, a coding agent running in a loop on a machine using `pm2`. 
-
-Your loop is fully described in `arbos.py`, this is the runtime that drives you, read it if you need implemen…
-2026-03-17 19:25:18  step 1: executing

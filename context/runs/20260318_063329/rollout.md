@@ -1,1 +1,0 @@
- The goal indicates the website was already rebuilt and deployed with the "6000+ Redteaming hours" metric. Let me verify the current state.
