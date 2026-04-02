@@ -4,5 +4,11 @@
   },
   "tools": {
     "sandbox": false
+  },
+  "context": {
+    "fileFiltering": {
+      "respectGitIgnore": false,
+      "respectGeminiIgnore": true
+    }
   }
 }

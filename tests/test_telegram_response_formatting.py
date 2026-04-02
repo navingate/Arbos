@@ -25,6 +25,15 @@ class TelegramResponseFormattingTests(unittest.TestCase):
         self.assertIn("Use short paragraphs or a few flat bullets.", prompt)
         self.assertIn("Do not narrate your plan or list every command before doing the work.", prompt)
 
+    def test_operator_prompt_stays_under_budget_even_with_large_context(self):
+        with patch.object(arbos, "load_chatlog", return_value="CHAT:" + ("x" * 5000)), \
+             patch.object(arbos, "_recent_context", return_value="CTX:" + ("y" * 5000)):
+            prompt = arbos._build_operator_prompt("hi")
+
+        self.assertLess(len(prompt), 1800)
+        self.assertIn("Use shell commands for `context/` files if needed.", prompt)
+        self.assertIn("## Operator message", prompt)
+
     def test_run_agent_streaming_hides_partial_text_until_final_answer(self):
         bot = _FakeBot()
         partial = "I will inspect the files and then explain everything in detail."

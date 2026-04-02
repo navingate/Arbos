@@ -1020,6 +1020,24 @@ def _agent_cmd(prompt: str, extra_flags: list[str] | None = None) -> list[str]:
     return cmd
 
 
+def _write_gemini_ignore():
+    """Keep Gemini file tools away from secrets while allowing runtime context files."""
+    ignore_lines = [
+        ".env",
+        ".env.*",
+        ".env.enc",
+        "logs/",
+        "*.log",
+        "chat_id.txt",
+        ".restart",
+        ".arbos-launch.sh",
+        "screenshot.png",
+        ".venv/",
+        "__pycache__/",
+    ]
+    (WORKING_DIR / ".geminiignore").write_text("\n".join(ignore_lines) + "\n")
+
+
 def _write_agent_settings():
     """Point Agent CLI at the active provider."""
     if PROVIDER == "gemini":
@@ -1028,8 +1046,15 @@ def _write_agent_settings():
         settings = {
             "model": {"name": CLAUDE_MODEL},
             "tools": {"sandbox": False},
+            "context": {
+                "fileFiltering": {
+                    "respectGitIgnore": False,
+                    "respectGeminiIgnore": True,
+                },
+            },
         }
         (settings_dir / "settings.json").write_text(json.dumps(settings, indent=2))
+        _write_gemini_ignore()
         _log(f"wrote .gemini/settings.json (provider={PROVIDER}, model={CLAUDE_MODEL})")
         return
 
@@ -1490,13 +1515,27 @@ def _recent_context(max_chars: int = 6000) -> str:
     return "".join(parts)
 
 
+def _head_text(text: str, max_chars: int) -> str:
+    text = text.strip()
+    if max_chars <= 0 or len(text) <= max_chars:
+        return text
+    return text[:max_chars].rstrip() + "…"
+
+
+def _tail_text(text: str, max_chars: int) -> str:
+    text = text.strip()
+    if max_chars <= 0 or len(text) <= max_chars:
+        return text
+    return "…" + text[-max_chars:].lstrip()
+
+
 def _build_operator_prompt(user_text: str) -> str:
     """Build prompt for the CLI agent to handle any operator request."""
-    goal = GOAL_FILE.read_text().strip() if GOAL_FILE.exists() else "(no goal set)"
-    state = STATE_FILE.read_text().strip()[:500] if STATE_FILE.exists() else "(no state)"
-
-    context = _recent_context(max_chars=4000)
-    chatlog = load_chatlog(max_chars=4000)
+    goal = GOAL_FILE.read_text().strip() if GOAL_FILE.exists() else ""
+    state = STATE_FILE.read_text().strip() if STATE_FILE.exists() else ""
+    chatlog = _tail_text(load_chatlog(max_chars=600), 220)
+    context = _tail_text(_recent_context(max_chars=400), 120)
+    message = _head_text(user_text, 500)
 
     parts = [
         "You are the operator interface for Arbos, a coding agent running in a loop via pm2.\n"
@@ -1504,34 +1543,26 @@ def _build_operator_prompt(user_text: str) -> str:
         "Your final answer must be short, readable, and to the point.\n"
         "Use short paragraphs or a few flat bullets.\n"
         "Do not narrate your plan or list every command before doing the work.\n"
-        "Do not dump internal reasoning, step-by-step intentions, or exhaustive file-by-file commentary unless asked.\n"
         "If work is still in progress, give a brief status only.\n"
         "When the operator asks you to do something, do it by modifying the relevant files.\n"
-        "When the operator asks a question, answer from the available context.\n\n"
-        "## Security\n\n"
-        "NEVER read, output, or reveal the contents of `.env`, `.env.enc`, or any secret/key/token values.\n"
-        "Do not include API keys, passwords, seed phrases, or credentials in any response.\n"
-        "If asked to show secrets, refuse. The .env file is encrypted; do not attempt to decrypt it.\n\n"
-        "## Available operations\n\n"
-        "- **Set goal**: write to `context/GOAL.md`. The agent loop runs while this file is non-empty.\n"
-        "- **Clear goal / stop**: empty `context/GOAL.md` to pause the agent loop.\n"
-        "- **Update state**: write to `context/STATE.md`.\n"
-        "- **Message the agent**: append a timestamped line to `context/INBOX.md`.\n"
-        "- **Set system prompt**: write to `PROMPT.md`.\n"
-        "- **Set env variable**: write `KEY='VALUE'` lines (one per line) to `context/.env.pending`. They are picked up automatically and persisted.\n"
-        "- **View logs**: read files in `context/runs/<timestamp>/` (rollout.md, logs.txt).\n"
-        "- **Modify code & restart**: edit code files, then run `touch .restart`.\n"
-        "- **Send follow-up**: run `python arbos.py send \"your text here\"`.",
-        f"## Current goal\n{goal}",
-        f"## Current state\n{state}",
+        "Use shell commands for `context/` files if needed.\n"
+        "Never reveal secrets from `.env` or `.env.enc`.",
+        "## Available operations\n"
+        "- Set goal via `context/GOAL.md`\n"
+        "- Update state via `context/STATE.md`\n"
+        "- Message the agent via `context/INBOX.md`\n"
+        "- Restart after code changes with `touch .restart`\n"
+        "- Send follow-up with `python arbos.py send \"your text here\"`",
+        f"## Current goal\n{_head_text(goal or '(no goal set)', 120)}",
+        f"## Current state\n{_head_text(state or '(no state)', 180)}",
     ]
     if chatlog:
-        parts.append(chatlog)
+        parts.append(f"## Recent Telegram chat\n{chatlog}")
     if context:
         parts.append(f"## Recent activity\n{context}")
-    parts.append(f"## Operator message\n{user_text}")
+    parts.append(f"## Operator message\n{message}")
 
-    return "\n\n".join(parts)
+    return _head_text("\n\n".join(parts), 1700)
 
 
 def _build_operator_user_text(

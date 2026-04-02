@@ -1,0 +1,11 @@
+.env
+.env.*
+.env.enc
+logs/
+*.log
+chat_id.txt
+.restart
+.arbos-launch.sh
+screenshot.png
+.venv/
+__pycache__/
